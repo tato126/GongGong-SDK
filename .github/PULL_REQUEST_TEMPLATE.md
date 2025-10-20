@@ -7,12 +7,12 @@
 <br>
 
 ## 📌Issue
-> 닫을 issue 번호 : resolved #이슈번호
+> 닫을 issue 번호 : resolves #이슈번호
 
 <br>
 
 ## 🩼Branch
-> 반영 branch feat-이슈번호 -> main
+> 반영 branch feat-이슈번호 -> dev
 
 <br>
 
