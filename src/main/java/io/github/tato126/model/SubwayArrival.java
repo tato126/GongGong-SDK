@@ -382,6 +382,74 @@ public class SubwayArrival {
     }
 
     /**
+     * Returns a human-readable description of the train's current location status.
+     *
+     * <p>Interprets the arrival status code to provide a clear description:
+     * <ul>
+     *   <li>Code 0: Entering the queried station</li>
+     *   <li>Code 1: Arrived at the queried station</li>
+     *   <li>Code 2: Departed from the queried station</li>
+     *   <li>Code 3: Departed from the previous station</li>
+     *   <li>Code 4: Entering the previous station</li>
+     *   <li>Code 5: Arrived at the previous station</li>
+     *   <li>Code 99: In operation</li>
+     * </ul>
+     *
+     * @return a human-readable location status description
+     */
+    public String getLocationStatus() {
+        if (arrivalStatusCode == null || arrivalStatusCode.isEmpty()) {
+            return "알 수 없음";
+        }
+
+        switch (arrivalStatusCode) {
+            case "0":
+                return String.format("%s역 진입 중", stationName);
+            case "1":
+                return String.format("%s역 도착", stationName);
+            case "2":
+                return String.format("%s역 출발", stationName);
+            case "3":
+                return String.format("전역 출발 (다음: %s역)", stationName);
+            case "4":
+                return String.format("전역 진입 중 (다음: %s역)", stationName);
+            case "5":
+                String prevStation = secondArrivalMessage != null ? secondArrivalMessage : "전역";
+                return String.format("%s 도착 (다음: %s역)", prevStation, stationName);
+            case "99":
+                return String.format("%s역 방향 운행 중", finalDestinationStationName != null ? finalDestinationStationName : "");
+            default:
+                return "알 수 없음";
+        }
+    }
+
+    /**
+     * Returns the estimated arrival time in minutes.
+     *
+     * @return arrival time in minutes (rounded up), or 0 if already arrived
+     */
+    public int getArrivalTimeInMinutes() {
+        if (arrivalTime == null || arrivalTime.isEmpty()) {
+            return 0;
+        }
+        try {
+            int seconds = Integer.parseInt(arrivalTime);
+            return (seconds + 59) / 60; // Round up
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Checks if this is the last train of the day.
+     *
+     * @return true if this is the last train, false otherwise
+     */
+    public boolean isLastTrainOfDay() {
+        return "1".equals(isLastTrain);
+    }
+
+    /**
      * Returns a string representation of this subway arrival.
      *
      * @return a string with station name, line, and arrival time
