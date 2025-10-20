@@ -72,3 +72,7 @@ credentials/
 ### Claude & MCP Servers ###
 .serena/
 claudedocs/
+
+### Local Documentation ###
+SUBWAY_API_GUIDE.md
+PUBLIC_DATA_SDK_GUIDE.md
