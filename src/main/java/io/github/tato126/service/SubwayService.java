@@ -94,7 +94,7 @@ public class SubwayService {
      * @param stationName the Korean name of the subway station
      * @return a list of subway arrivals, empty list if no arrivals found
      * @throws IllegalArgumentException if stationName is null or empty
-     * @throws ApiException if API returns an error or data is invalid
+     * @throws ApiException             if API returns an error or data is invalid
      * @see <a href="https://data.seoul.go.kr/dataList/OA-12764/F/1/datasetView.do">Seoul Subway API</a>
      */
     public List<SubwayArrival> getRealtimeArrival(String stationName) {
@@ -113,11 +113,11 @@ public class SubwayService {
      * </ul>
      *
      * @param stationName the Korean name of the subway station
-     * @param startIndex the starting index (0-based, inclusive)
-     * @param endIndex the ending index (inclusive, max 1000 results per request)
+     * @param startIndex  the starting index (0-based, inclusive)
+     * @param endIndex    the ending index (inclusive, max 1000 results per request)
      * @return a list of subway arrivals
      * @throws IllegalArgumentException if parameters are invalid
-     * @throws ApiException if API returns an error
+     * @throws ApiException             if API returns an error
      */
     public List<SubwayArrival> getRealtimeArrival(String stationName, int startIndex, int endIndex) {
 
@@ -146,8 +146,8 @@ public class SubwayService {
      * <p>URL format: {baseUrl}/{apiKey}/{format}/{service}/{start}/{end}/{stationName}
      *
      * @param stationName the station name to query
-     * @param startIndex the start index for pagination
-     * @param endIndex the end index for pagination
+     * @param startIndex  the start index for pagination
+     * @param endIndex    the end index for pagination
      * @return the complete API URL
      * @throws ApiException if station name encoding fails
      */
@@ -191,6 +191,7 @@ public class SubwayService {
 
         try {
             JsonNode root = objectMapper.readTree(jsonResponse);
+            log.debug("Received response: {}", root);
 
             // 1. 에러 체크
             if (root.has("errorMessage")) {
@@ -198,8 +199,12 @@ public class SubwayService {
                 String code = error.get("code").asText();
                 String message = error.get("message").asText();
 
-                log.error("API error: code={}, message={}", code, message);
-                throw new ApiException(String.format("API error: [%s]: %s", code, message));
+                if (!code.equals("INFO-000")) {
+                    log.error("API error code:{}, message={}", code, message);
+                    throw new ApiException(String.format("API error [%s]: %s", code, message));
+                }
+
+                log.error("API Response: code={}, message={}", code, message);
             }
 
             // 2. 도착 정보 리스트 확인
@@ -268,7 +273,7 @@ public class SubwayService {
     /**
      * Safely extracts a string value from JSON node, returning empty string if not present.
      *
-     * @param node the JSON node to extract from
+     * @param node      the JSON node to extract from
      * @param fieldName the field name to look for
      * @return the string value or empty string if null/missing
      */
@@ -298,7 +303,7 @@ public class SubwayService {
      * Validates pagination parameters.
      *
      * @param startIndex the start index (must be non-negative)
-     * @param endIndex the end index (must be >= startIndex and within 1000 range)
+     * @param endIndex   the end index (must be >= startIndex and within 1000 range)
      * @throws IllegalArgumentException if pagination parameters are invalid
      */
     private void validatePagination(int startIndex, int endIndex) {
