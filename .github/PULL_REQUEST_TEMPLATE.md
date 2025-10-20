@@ -31,7 +31,7 @@
 <!-- PR 머지 시 Issue를 자동으로 닫으려면 아래 형식 사용 -->
 <!-- 예: resolves #7 -->
 
-resolves #이슈번호
+close #이슈번호
 
 <br>
 
