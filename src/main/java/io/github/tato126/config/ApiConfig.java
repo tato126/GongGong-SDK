@@ -24,7 +24,6 @@ import java.util.Objects;
  *
  * @since 1.0.0
  * @author chan
- * @see io.github.tato126.PublicDataClient
  */
 public final class ApiConfig {
 

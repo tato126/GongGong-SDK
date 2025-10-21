@@ -1,0 +1,8 @@
+# Maven Central 인증 정보
+# 실제 값은 ~/.gradle/gradle.properties에 설정하세요
+mavenCentralUsername=your-sonatype-username
+mavenCentralPassword=your-sonatype-password
+
+# GPG Signing 설정
+signing.gnupg.keyName=YOUR_FULL_GPG_KEY_ID
+signing.gnupg.passphrase=your-gpg-passphrase

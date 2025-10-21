@@ -50,6 +50,7 @@ config.properties
 secret.properties
 *-local.properties
 *-secret.properties
+gradle.properties
 
 ### Logs ###
 *.log
