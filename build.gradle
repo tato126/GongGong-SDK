@@ -1,9 +1,11 @@
 plugins {
-    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
 }
 
 group = 'io.github.tato126'
-version = '1.0-SNAPSHOT'
+version = '1.0.0'
 
 repositories {
     mavenCentral()
@@ -27,4 +29,63 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+// Maven Central 배포 설정
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            pom {
+                name = 'GongGong SDK'
+                description = 'Java SDK for Korean Public Data API - Easy access to Seoul Metro real-time arrival information and more'
+                url = 'https://github.com/tato126/GongGong-SDK'
+
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'tato126'
+                        name = 'Heechan'
+                        email = 'heechan.log@gmail.com'
+                    }
+                }
+
+                scm {
+                    connection = 'scm:git:git://github.com/tato126/GongGong-SDK.git'
+                    developerConnection = 'scm:git:ssh://github.com/tato126/GongGong-SDK.git'
+                    url = 'https://github.com/tato126/GongGong-SDK'
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+
+            credentials {
+                username = project.findProperty("mavenCentralUsername") ?: ""
+                password = project.findProperty("mavenCentralPassword") ?: ""
+            }
+        }
+    }
+}
+
+signing {
+    useGpgCmd()
+    sign publishing.publications.mavenJava
 }

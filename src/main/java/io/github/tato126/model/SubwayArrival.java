@@ -6,7 +6,7 @@ import java.util.Objects;
  * Subway real-time arrival information class.
  *
  * <p>This class represents real-time subway arrival information provided by
- * Seoul Transportation Operation & Information Service (TOPIS). It is designed
+ * Seoul Transportation Operation &amp; Information Service (TOPIS). It is designed
  * as an immutable object and should be created using the Builder pattern.
  *
  * <p>Key information categories:
